@@ -3,6 +3,9 @@ https://github.com/asityonjan13/cms-52.git
 CLI
 -git init
 -git remote add origin https://github.com/asityonjan13/cms-52.git
+-git add .
+-git commit -m "React First Push, component, props, states, router, template, layouts done."
+
 
 
 ## React Installation
