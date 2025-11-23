@@ -1,29 +1,37 @@
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router";
+import { NavLink, useOutletContext } from "react-router";
 import type { IOutletContext } from "../layouts/AuthLayout";
+import { FormBothComponentRegisterBased, SubmitButton } from "../../components/form/FormElementComponent";
+import { type Icredentials, loginDTO } from "./auth.contract";
+import {useForm} from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-interface Icredentials {
-    email: string
-    password: string
-}
 
 export default function LoginPage() {
     
     const { setPageTitle } = useOutletContext<IOutletContext>();
+    //Form handling collect,validate and submit
 
-    const [credentials, setCredentials] = useState<Icredentials>({
-        email: "",
-        password: ""
-    });
+    const { register, handleSubmit, formState:{errors, isSubmitting}} = useForm({
+        defaultValues: {email:'', password:''},
+        resolver: zodResolver(loginDTO),
+        mode: 'onBlur',  
+    })
 
+    const submitLoginForm = (data: Icredentials) => {
+        //This function should submit data to API
+        console.log(data)
+    }
+    // For hidden and visibility pswd option
     const [showPassword, setShowPassword] = useState(false);
-    
+
     useEffect(() => {
+        console.log('Component mounted');
         setPageTitle({
             title: "Namaste!! Welcome to Admin Panel",
             subtitle: "You can access the platform after login"
         })
-    }, [])
+    }, [setPageTitle])
 
     return (
         <>
@@ -41,50 +49,45 @@ export default function LoginPage() {
                         {/* Decorative gradient */}
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500 via-emerald-500 to-teal-500"></div>
                         
-                        <form className="space-y-5">
-                            {/* Email Input */}
+                        <form onSubmit={handleSubmit(submitLoginForm)} className="space-y-5">
+                            {/* Email Input using two component
                             <div>
-                                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                                    Email Address
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                                        </svg>
-                                    </div>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        value={credentials.email}
-                                        onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-400"
-                                        placeholder="you@example.com"
-                                        autoComplete="email"
-                                    />
-                                </div>
-                            </div>
+                                <FormLabelComponent htmlfor="email" children="Email Address" />
+                                <FormInputComponent icon= "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"type="email" name="email" placeholder="mail@domain.com"/>
+                                
+                            </div> */}
+                            {/* Email Input using single component*/}
+                            <FormBothComponentRegisterBased
+                                label = {{
+                                    htmlFor: "email",
+                                    children: <>Username/Email</>
+                                }}
+                                input = {{
+                                    type: "email",
+                                    name: "email",
+                                    register: register,
+                                    placeholder: "you@examxple.com",
+                                    icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                }}
+                                errorMessage = { errors?.email?.message }
+                            />
+                            
 
                             {/* Password Input */}
-                            <div>
-                                <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
-                                    Password
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                        </svg>
-                                    </div>
-                                    <input
-                                        type={showPassword ? "text" : "password"}
-                                        id="password"
-                                        value={credentials.password}
-                                        onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-                                        className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-400"
-                                        placeholder="Enter your password"
-                                        autoComplete="current-password"
-                                    />
+                            <FormBothComponentRegisterBased
+                                label = {{
+                                    htmlFor: "password",
+                                    children: <>Password</>
+
+                                }}
+                                input = {{
+                                    type: showPassword ? "text" : "password",
+                                    name: "password",
+                                    register: register,
+                                    placeholder: "case sensitive password",
+                                    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                                }}
+                                rightElement = {
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
@@ -101,8 +104,9 @@ export default function LoginPage() {
                                             </svg>
                                         )}
                                     </button>
-                                </div>
-                            </div>
+                                }
+                                errorMessage = {errors?.password?.message}
+                            />
 
                             {/* Remember & Forgot */}
                             <div className="flex items-center justify-between">
@@ -113,18 +117,13 @@ export default function LoginPage() {
                                     />
                                     <span className="ml-2 text-sm text-gray-700">Remember me</span>
                                 </label>
-                                <a href="/forget-password" className="text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors">
+                                <NavLink to="/forget-password" className="text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors">
                                     Forgot password?
-                                </a>
+                                </NavLink>
                             </div>
 
-                            {/* Login Button */}
-                            <button
-                                type="submit"
-                                className="w-full bg-gradient-to-r from-teal-600 to-emerald-600 text-white py-3 rounded-xl font-semibold hover:from-teal-700 hover:to-emerald-700 transition-all duration-200 shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 transform hover:-translate-y-0.5"
-                            >
-                                Sign In
-                            </button>
+                            {/* Login Submit Button */}
+                            <SubmitButton children="Signin" disabled={isSubmitting}/>
                         </form>
 
                         {/* Divider */}
@@ -160,9 +159,9 @@ export default function LoginPage() {
                     {/* Register Link */}
                     <p className="text-center mt-6 text-gray-600">
                         Don't have an account?{' '}
-                        <a href="/register" className="font-semibold text-teal-600 hover:text-teal-700 transition-colors">
+                        <NavLink to="/register" className="font-semibold text-teal-600 hover:text-teal-700 transition-colors">
                             Create one now →
-                        </a>
+                        </NavLink>
                     </p>
                 </div>
             </div>

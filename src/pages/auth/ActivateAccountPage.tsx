@@ -12,22 +12,21 @@ export default function ActivateAccountPage(){
     console.log(query.get('username'))
     useEffect(()=>{
         setTimeout(()=>{
-            setQuery({
+            setQuery( {
                 username:"test@gmail.com",
-
             })
         },3000)
 
-    },[])
+    },[setQuery])
 
-    
+
     const {setPageTitle} = useOutletContext<IOutletContext>();
     useEffect(() =>{
         setPageTitle({
             title: "Namaste!! Please activate your account",
             subtitle: "Enter code sent to your mail inorder to activate your account"
         })
-    },[])
+    },[setPageTitle])
     
     return(
     <>

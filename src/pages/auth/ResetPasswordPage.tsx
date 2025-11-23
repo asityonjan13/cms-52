@@ -1,5 +1,5 @@
 import { useEffect} from "react";
-import { useOutletContext } from "react-router";
+import { useOutletContext, Link } from "react-router";
 import type { IOutletContext } from "../layouts/AuthLayout";
 
 export default function ResetPasswordPage(){
@@ -11,7 +11,7 @@ export default function ResetPasswordPage(){
             title: "Namaste!! Welcome to Password Reset Page",
             subtitle: "Use OTP to create new password.."
         })
-    },[])
+    },[setPageTitle])
     return(
         <>
         {/* Right Side - Reset Password Panel */}
@@ -57,8 +57,8 @@ export default function ResetPasswordPage(){
                     </button>
                 </form>
                 <div className="flex justify-between mt-4 text-sm">
-                    <a href="/" className="text-teal-600 hover:underline">Back to Login</a>
-                    <a href="/register" className="text-teal-600 hover:underline font-medium">Need an account? Register</a>
+                    <Link to="/" className="text-teal-600 hover:underline">Back to Login</Link>
+                    <Link to="/register" className="text-teal-600 hover:underline font-medium">Need an account? Register</Link>
                 </div>
             </div>
         </div>

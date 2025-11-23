@@ -1,5 +1,5 @@
 import { useEffect} from "react";
-import { useOutletContext } from "react-router";
+import { useOutletContext, Link } from "react-router";
 import type { IOutletContext } from "../layouts/AuthLayout";
 
 export default function ForgetPasswordPage(){
@@ -11,7 +11,7 @@ const {setPageTitle} = useOutletContext<IOutletContext>();
             title: "Namaste!!",
             subtitle: "Provide your email address to send you 6 digit authentication code."
         })
-    },[])
+    },[setPageTitle])
 
     return(
     <>
@@ -38,8 +38,8 @@ const {setPageTitle} = useOutletContext<IOutletContext>();
                 </button>
             </form>
             <div className="flex justify-between mt-4 text-sm">
-                <a href="/" className="text-teal-600 hover:underline font-medium">Back to Login</a>
-                <a href="/register" className="text-teal-600 hover:underline font-medium">Don't have account? Register</a>
+                <Link to="/" className="text-teal-600 hover:underline font-medium">Back to Login</Link>
+                <Link to="/register" className="text-teal-600 hover:underline font-medium">Don't have account? Register </Link>
             </div>
         </div>
     </div>

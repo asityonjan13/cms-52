@@ -1,7 +1,7 @@
 #Github setup
 https://github.com/asityonjan13/cms-52.git
 CLI
--it config --global user.name "Ahsit Tamang"
+-git config --global user.name "Ahsit Tamang"
 -git config --global user.email "asityonjan13@gmail.com"
 -git init
 -git remote add origin https://github.com/asityonjan13/cms-52.git
